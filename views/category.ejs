@@ -8,24 +8,41 @@
   <style>body{font-family:'Inter',sans-serif;background:#fff;color:#000;} a{color:#dc2626;}</style>
 </head>
 <body>
-  <!-- Same header/nav as index.ejs (copy-paste) -->
-  <header class="bg-red-600 text-white p-4 text-center"><h1 class="text-3xl">Antarvasna</h1><form action="/search"><input type="search" name="q" placeholder="Search" class="w-full p-2 rounded mt-2"></form></header>
-  <nav class="bg-gray-100 p-4"><!-- Categories links --></nav>
+  <!-- Copy header/nav/mobile menu from index.ejs -->
+  <header class="bg-red-600 text-white p-4 text-center"><h1 class="text-3xl font-bold">Antarvasna</h1><p class="text-red-100">Hindi Sex Stories</p><form action="/search" class="mt-4 max-w-md mx-auto"><input type="search" name="q" placeholder="Search" class="w-full p-2 rounded"></form></header>
+  <nav class="bg-gray-100 p-4 hidden md:block"><!-- Categories links same as index --></nav>
+  <div id="mobileMenu" class="md:hidden ..."><!-- Same as index --></div>
+  <button onclick="toggleMenu()" class="md:hidden fixed top-4 right-4 z-40 bg-red-600 text-white p-2 rounded">☰</button>
 
-  <main class="p-4">
-    <h2 class="text-2xl mb-4"><%= category %></h2>
+  <main class="p-4 max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4"><%= category %> Stories</h2>
     <% stories.forEach(s => { %>
       <article class="border-b pb-4 mb-4">
-        <h3><a href="/story/<%= s.id %>"><%= s.title %></a></h3>
-        <p>On <%= s.date %></p>
-        <p><%= s.excerpt %></p>
+        <h3 class="text-xl font-semibold"><a href="/story/<%= s.id %>"><%= s.title %></a></h3>
+        <p class="text-gray-600">On <%= s.date %></p>
+        <% s.categories.forEach(cat => { %><a href="/category/<%= cat.toLowerCase().replace(/ /g, '-') %>" class="text-red-600 mr-2"><%= cat %></a><% }); %>
+        <p>Tags: <% s.tags.forEach(tag => { %><a href="#" class="text-blue-600 mr-1"><%= tag %></a><% }); %></p>
+        <p class="text-gray-600 mt-2"><%= s.excerpt %></p>
+        <img src="<%= s.thumbnail %>" alt="" class="w-full h-48 object-cover mt-2 rounded">
       </article>
     <% }); %>
-    <a href="#" class="text-red-600">Pagination</a>
+
+    <!-- Pagination same as index -->
+    <% if (totalPages > 1) { %>
+      <div class="flex justify-center mt-8 gap-2">
+        <% if (currentPage > 1) { %><a href="?page=<%= currentPage - 1 %>" class="px-3 py-2 bg-red-600 text-white rounded">Prev</a><% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="px-3 py-2 <%= i === currentPage ? 'bg-red-600 text-white' : 'bg-gray-200' %> rounded"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %><a href="?page=<%= currentPage + 1 %>" class="px-3 py-2 bg-red-600 text-white rounded">Next</a><% } %>
+      </div>
+    <% } %>
   </main>
 
-  <!-- Same footer/modals as index -->
-  <footer class="bg-gray-800 text-white p-4 mt-8"><!-- Links --></footer>
-  <script>/* Same JS */</script>
+  <!-- Copy footer/modals/script from index.ejs -->
+  <footer class="bg-gray-800 text-white p-4 mt-8 text-center"><!-- Same --></footer>
+  <div id="subscribeModal"><!-- Same --></div>
+  <div id="donateModal"><!-- Same --></div>
+  <script>/* Same JS from index */</script>
 </body>
 </html>
