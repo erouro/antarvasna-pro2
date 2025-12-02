@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"></head>
+<body class="p-6 bg-white">
+  <h1 class="text-3xl mb-4">Admin Panel</h1>
+  <% if (msg) { %><p class="bg-green-200 p-2 mb-4"><%= msg %></p><% } %>
+  <a href="/admin/logout" class="bg-red-600 text-white px-4 py-2 rounded">Logout</a>
+
+  <!-- Add Story Form -->
+  <form action="/admin/add-story" method="POST" class="bg-gray-100 p-4 rounded mb-6">
+    <input type="text" name="title" placeholder="Title" class="w-full p-2 mb-2" required>
+    <textarea name="excerpt" placeholder="Excerpt" class="w-full p-2 mb-2 h-20" required></textarea>
+    <textarea name="content" placeholder="Full Content" class="w-full p-2 mb-2 h-40" required></textarea>
+    <input type="text" name="thumbnail" placeholder="Thumbnail URL" class="w-full p-2 mb-2">
+    <select name="categories" multiple class="w-full p-2 mb-2">
+      <option value="जवान लड़की">जवान लड़की</option>
+      <option value="रिश्तों में चुदाई">रिश्तों में चुदाई</option>
+      <!-- All categories -->
+    </select>
+    <input type="text" name="tags" placeholder="Tags (comma separated)" class="w-full p-2 mb-2">
+    <button type="submit" class="bg-blue-600 text-white p-2 rounded">Add Story</button>
+  </form>
+
+  <!-- Subscribers Table -->
+  <h2 class="text-2xl mb-2">Subscribers (<%= subscribers.length %>)</h2>
+  <table class="w-full border mb-6">
+    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>UPI</th><th>Address</th></tr></thead>
+    <tbody><% subscribers.forEach(sub => { %><tr><td><%= sub.name %></td><td><%= sub.email %></td><td><%= sub.phone %></td><td><%= sub.upi %></td><td><%= sub.address %></td></tr><% }); %></tbody>
+  </table>
+
+  <!-- Donors Table -->
+  <h2 class="text-2xl mb-2">Donors (<%= donors.length %>)</h2>
+  <table class="w-full border">
+    <thead><tr><th>UPI</th><th>Amount</th><th>Message</th><th>Date</th></tr></thead>
+    <tbody><% donors.forEach(d => { %><tr><td><%= d.upi %></td><td>₹<%= d.amount %></td><td><%= d.message %></td><td><%= d.date %></td></tr><% }); %></tbody>
+  </table>
+
+  <!-- Stories List -->
+  <h2 class="text-2xl mt-6 mb-2">Stories</h2>
+  <ul><% stories.forEach(s => { %><li><%= s.title %> (<%= s.views %> views)</li><% }); %></ul>
+</body>
+</html>
