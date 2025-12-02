@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= category %> - Antarvasna</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif;background:#fff;color:#000;} a{color:#dc2626;}</style>
+</head>
+<body>
+  <!-- Same header/nav as index.ejs (copy-paste) -->
+  <header class="bg-red-600 text-white p-4 text-center"><h1 class="text-3xl">Antarvasna</h1><form action="/search"><input type="search" name="q" placeholder="Search" class="w-full p-2 rounded mt-2"></form></header>
+  <nav class="bg-gray-100 p-4"><!-- Categories links --></nav>
+
+  <main class="p-4">
+    <h2 class="text-2xl mb-4"><%= category %></h2>
+    <% stories.forEach(s => { %>
+      <article class="border-b pb-4 mb-4">
+        <h3><a href="/story/<%= s.id %>"><%= s.title %></a></h3>
+        <p>On <%= s.date %></p>
+        <p><%= s.excerpt %></p>
+      </article>
+    <% }); %>
+    <a href="#" class="text-red-600">Pagination</a>
+  </main>
+
+  <!-- Same footer/modals as index -->
+  <footer class="bg-gray-800 text-white p-4 mt-8"><!-- Links --></footer>
+  <script>/* Same JS */</script>
+</body>
+</html>
