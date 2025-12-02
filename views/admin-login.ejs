@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin Login</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><style>body{background:#fff;}</style></head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded shadow max-w-md w-full">
+    <h1 class="text-2xl text-center mb-4">Admin Login</h1>
+    <% if (msg) { %><p class="text-red-600 mb-4"><%= msg %></p><% } %>
+    <form action="/admin/login" method="POST">
+      <input type="password" name="pass" placeholder="Password" class="w-full p-3 border rounded mb-4" required>
+      <button type="submit" class="w-full bg-red-600 text-white p-3 rounded">Login</button>
+    </form>
+  </div>
+</body>
+</html>
