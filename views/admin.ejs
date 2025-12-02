@@ -1,42 +1,82 @@
 <!DOCTYPE html>
 <html lang="hi">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"></head>
-<body class="p-6 bg-white">
-  <h1 class="text-3xl mb-4">Admin Panel</h1>
-  <% if (msg) { %><p class="bg-green-200 p-2 mb-4"><%= msg %></p><% } %>
-  <a href="/admin/logout" class="bg-red-600 text-white px-4 py-2 rounded">Logout</a>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel - Antarvasna</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>body{background:#fff; color:#000;}</style>
+</head>
+<body class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-red-600">Admin Panel</h1>
+    <a href="/admin/logout" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Logout</a>
+  </div>
+  <% if (msg) { %><div class="bg-green-200 p-3 rounded mb-4 text-green-800"><%= msg %></div><% } %>
 
   <!-- Add Story Form -->
-  <form action="/admin/add-story" method="POST" class="bg-gray-100 p-4 rounded mb-6">
-    <input type="text" name="title" placeholder="Title" class="w-full p-2 mb-2" required>
-    <textarea name="excerpt" placeholder="Excerpt" class="w-full p-2 mb-2 h-20" required></textarea>
-    <textarea name="content" placeholder="Full Content" class="w-full p-2 mb-2 h-40" required></textarea>
-    <input type="text" name="thumbnail" placeholder="Thumbnail URL" class="w-full p-2 mb-2">
-    <select name="categories" multiple class="w-full p-2 mb-2">
-      <option value="जवान लड़की">जवान लड़की</option>
-      <option value="रिश्तों में चुदाई">रिश्तों में चुदाई</option>
-      <!-- All categories -->
-    </select>
-    <input type="text" name="tags" placeholder="Tags (comma separated)" class="w-full p-2 mb-2">
-    <button type="submit" class="bg-blue-600 text-white p-2 rounded">Add Story</button>
-  </form>
+  <div class="bg-gray-100 p-6 rounded mb-6">
+    <h2 class="text-xl font-bold mb-4">Add New Story</h2>
+    <form action="/admin/add-story" method="POST" class="space-y-4">
+      <input type="text" name="title" placeholder="Title" class="w-full p-3 border rounded" required>
+      <textarea name="excerpt" placeholder="Excerpt (short description)" class="w-full p-3 border rounded h-20" required></textarea>
+      <textarea name="content" placeholder="Full Story Content" class="w-full p-3 border rounded h-40" required></textarea>
+      <input type="text" name="thumbnail" placeholder="Thumbnail URL" class="w-full p-3 border rounded">
+      <select name="categories" multiple class="w-full p-3 border rounded h-32" required> <!-- Multi-select: Ctrl+click -->
+        <option value="जवान लड़की">जवान लड़की</option>
+        <option value="रिश्तों में चुदाई">रिश्तों में चुदाई</option>
+        <option value="कोई मिल गया">कोई मिल गया</option>
+        <option value="पड़ोसी">पड़ोसी</option>
+        <option value="भाभी की चुदाई">भाभी की चुदाई</option>
+        <option value="इंडियन बीवी की चुदाई">इंडियन बीवी की चुदाई</option>
+        <option value="गे सेक्स स्टोरी">गे सेक्स स्टोरी</option>
+        <option value="नौकर-नौकरानी">नौकर-नौकरानी</option>
+        <option value="लड़कियों की गांड चुदाई">लड़कियों की गांड चुदाई</option>
+      </select>
+      <input type="text" name="tags" placeholder="Tags (comma separated)" class="w-full p-3 border rounded">
+      <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded font-bold">Publish Story</button>
+    </form>
+  </div>
+
+  <!-- Tabs for Stories/Subscribers/Donors -->
+  <div class="flex gap-4 mb-4">
+    <button onclick="showTab('stories')" class="px-4 py-2 bg-red-600 text-white rounded">Stories (<%= stories.length %>)</button>
+    <button onclick="showTab('subscribers')" class="px-4 py-2 bg-gray-200 rounded">Subscribers (<%= subscribers.length %>)</button>
+    <button onclick="showTab('donors')" class="px-4 py-2 bg-gray-200 rounded">Donors (<%= donors.length %>)</button>
+  </div>
+
+  <!-- Stories Table -->
+  <div id="stories" class="tab-content">
+    <table class="w-full border-collapse border border-gray-300 mb-6">
+      <thead><tr class="bg-gray-200"><th class="border p-2">Title</th><th class="border p-2">Category</th><th class="border p-2">Views</th><th class="border p-2">Date</th></tr></thead>
+      <tbody><% stories.forEach(s => { %><tr><td class="border p-2"><%= s.title %></td><td class="border p-2"><%= s.categories.join(', ') %></td><td class="border p-2"><%= s.views %></td><td class="border p-2"><%= s.date %></td></tr><% }); %></tbody>
+    </table>
+  </div>
 
   <!-- Subscribers Table -->
-  <h2 class="text-2xl mb-2">Subscribers (<%= subscribers.length %>)</h2>
-  <table class="w-full border mb-6">
-    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>UPI</th><th>Address</th></tr></thead>
-    <tbody><% subscribers.forEach(sub => { %><tr><td><%= sub.name %></td><td><%= sub.email %></td><td><%= sub.phone %></td><td><%= sub.upi %></td><td><%= sub.address %></td></tr><% }); %></tbody>
-  </table>
+  <div id="subscribers" class="tab-content hidden">
+    <table class="w-full border-collapse border border-gray-300">
+      <thead><tr class="bg-gray-200"><th class="border p-2">Name</th><th class="border p-2">Email</th><th class="border p-2">Phone</th><th class="border p-2">UPI</th><th class="border p-2">Address</th></tr></thead>
+      <tbody><% subscribers.forEach(sub => { %><tr><td class="border p-2"><%= sub.name %></td><td class="border p-2"><%= sub.email %></td><td class="border p-2"><%= sub.phone %></td><td class="border p-2"><%= sub.upi %></td><td class="border p-2"><%= sub.address %></td></tr><% }); %></tbody>
+    </table>
+  </div>
 
   <!-- Donors Table -->
-  <h2 class="text-2xl mb-2">Donors (<%= donors.length %>)</h2>
-  <table class="w-full border">
-    <thead><tr><th>UPI</th><th>Amount</th><th>Message</th><th>Date</th></tr></thead>
-    <tbody><% donors.forEach(d => { %><tr><td><%= d.upi %></td><td>₹<%= d.amount %></td><td><%= d.message %></td><td><%= d.date %></td></tr><% }); %></tbody>
-  </table>
+  <div id="donors" class="tab-content hidden">
+    <table class="w-full border-collapse border border-gray-300">
+      <thead><tr class="bg-gray-200"><th class="border p-2">UPI</th><th class="border p-2">Amount</th><th class="border p-2">Message</th><th class="border p-2">Date</th></tr></thead>
+      <tbody><% donors.forEach(d => { %><tr><td class="border p-2"><%= d.upi %></td><td class="border p-2">₹<%= d.amount %></td><td class="border p-2"><%= d.message %></td><td class="border p-2"><%= d.date %></td></tr><% }); %></tbody>
+    </table>
+  </div>
 
-  <!-- Stories List -->
-  <h2 class="text-2xl mt-6 mb-2">Stories</h2>
-  <ul><% stories.forEach(s => { %><li><%= s.title %> (<%= s.views %> views)</li><% }); %></ul>
+  <script>
+    function showTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tab).classList.remove('hidden');
+      document.querySelectorAll('button').forEach(btn => btn.classList.remove('bg-red-600', 'text-white'), btn.classList.add('bg-gray-200'));
+      event.target.classList.add('bg-red-600', 'text-white');
+      event.target.classList.remove('bg-gray-200');
+    }
+  </script>
 </body>
 </html>
