@@ -8,7 +8,54 @@
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#dc2626">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>body{font-family:'Inter',sans-serif;background:#fff;color:#000;} a{color:#dc2626;text-decoration:none;} .header-bg{background:#dc2626;}</style>
+  
+  <!-- Favicon (optional – agar chahe toh add kar lena) -->
+  <link rel="icon" href="https://i.imgur.com/abc123.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/abc123.jpg">
+
+  <style>
+    body {font-family:'Inter',sans-serif;background:#fff;color:#000;}
+    a {color:#dc2626;text-decoration:none;}
+    .header-bg {background:#dc2626;}
+  </style>
+
+  <!-- ←←← YEH POORA SCRIPT YAHAN HAI (Install Banner) →→→ -->
+  <script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();           // Browser ka default prompt rok do
+      deferredPrompt = e;
+
+      // 10 second delay (user thoda scroll kare pehle)
+      setTimeout(() => {
+        if (deferredPrompt && !document.getElementById('installBanner')) {
+          const banner = document.createElement('div');
+          banner.id = 'installBanner';
+          banner.innerHTML = `
+            <div class="fixed bottom-0 left-0 right-0 bg-red-600 text-white p-4 text-center z-50 shadow-2xl">
+              <p class="font-bold mb-2">Antarvasna Pro ko Home Screen pe add karo!</p>
+              <button id="installBtn" class="bg-white text-red-600 font-bold px-6 py-2 rounded-full mr-4 hover:bg-gray-100">
+                Install Karo
+              </button>
+              <button id="noThanks" class="text-white/80 underline">Nahi chahiye</button>
+            </div>`;
+          document.body.appendChild(banner);
+
+          document.getElementById('installBtn').addEventListener('click', async () => {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') banner.remove();
+            deferredPrompt = null;
+          });
+
+          document.getElementById('noThanks').addEventListener('click', () => {
+            banner.remove();
+          });
+        }
+      }, 10000); // 10 seconds baad dikhega
+    });
+  </script>
+  <!-- ↑↑↑ Install Banner Code Khatam ↑↑↑ -->
 </head>
 <body>
   <header class="header-bg text-white p-4 text-center">
