@@ -1,0 +1,14 @@
+<!-- Similar to category, but with results -->
+<!DOCTYPE html>
+<html lang="hi">
+<head><!-- Same head --></head>
+<body>
+  <!-- Header -->
+  <main class="p-4">
+    <h2>Search Results for "<%= query %>"</h2>
+    <% results.forEach(s => { %>
+      <article><!-- Story card same as index --></article>
+    <% }); %>
+  </main>
+</body>
+</html>
