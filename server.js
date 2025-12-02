@@ -107,19 +107,15 @@ app.post('/subscribe', (req, res) => {
   res.render('subscribe-success', {email: req.body.email});
 });
 
-app.post('/donate', (req, res) => {
-  donors.push({
-    upi: req.body.upi,
-    amount: req.body.amount,
-    message: req.body.message,
-    date: new Date().toISOString().split('T')[0]
-  });
-  res.render('donate-success');
-});
+// ←←← YEH POORA SECTION LAST MEIN HONA CHAHIYE (line ~110 se end tak) →→→
 
 app.get('/admin/logout', (req, res) => {
   isAuthenticated = false;
   res.redirect('/');
 });
 
-app.listen(process.env.PORT || 3000, () => console.log('Server running on port 3000'));
+// ←←← YEH SABSE LAST MEIN HONA CHAHIYE →→→
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
