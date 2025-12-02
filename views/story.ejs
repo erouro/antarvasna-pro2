@@ -8,17 +8,22 @@
   <style>body{font-family:'Inter',sans-serif;background:#fff;color:#000;}</style>
 </head>
 <body>
-  <!-- Header/nav same -->
-  <header class="bg-red-600 text-white p-4 text-center"><h1>Antarvasna</h1></header>
+  <!-- Header/nav same as index -->
+  <header class="bg-red-600 text-white p-4 text-center"><h1 class="text-3xl">Antarvasna</h1></header>
+  <nav class="bg-gray-100 p-4 hidden md:block"><!-- Categories --></nav>
+  <div id="mobileMenu"><!-- Same --></div>
+  <button onclick="toggleMenu()">☰</button>
 
   <main class="p-4 max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold"><%= story.title %></h1>
-    <p>On <%= story.date %> | <%= story.views %> views</p>
-    <% story.categories.forEach(cat => { %><span class="text-red-600"><%= cat %></span> <% }); %>
-    <div class="mt-4"><%= story.content %></div>
-    <a href="/" class="text-red-600 mt-4 block">← Back to Home</a>
+    <h1 class="text-3xl font-bold mb-2"><%= story.title %></h1>
+    <p class="text-gray-600 mb-4">On <%= story.date %> | <%= story.views %> views</p>
+    <% story.categories.forEach(cat => { %><span class="text-red-600 mr-2"><%= cat %></span><% }); %>
+    <p class="mb-4">Tags: <% story.tags.forEach(tag => { %><a href="#" class="text-blue-600 mr-1"><%= tag %></a><% }); %></p>
+    <img src="<%= story.thumbnail %>" alt="<%= story.title %>" class="w-full h-64 object-cover rounded mb-4">
+    <div class="text-lg leading-8 whitespace-pre-line"><%= story.content %></div>
+    <a href="/" class="text-red-600 mt-4 inline-block">← Back to Home</a>
   </main>
 
-  <!-- Footer/modals -->
+  <!-- Footer/modals/script same -->
 </body>
 </html>
