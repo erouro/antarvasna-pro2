@@ -1,14 +1,16 @@
-<!-- Similar to category, but with results -->
+<!-- Copy structure from category.ejs, replace h2 with "Search Results for '<%= query %>'" and use stories var -->
 <!DOCTYPE html>
 <html lang="hi">
-<head><!-- Same head --></head>
+<head><!-- Same as category --></head>
 <body>
-  <!-- Header -->
-  <main class="p-4">
-    <h2>Search Results for "<%= query %>"</h2>
-    <% results.forEach(s => { %>
-      <article><!-- Story card same as index --></article>
+  <!-- Header/nav/mobile same -->
+  <main class="p-4 max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Search Results for "<%= query %>"</h2>
+    <% stories.forEach(s => { %>
+      <!-- Same article as index/category -->
     <% }); %>
+    <!-- Same pagination -->
   </main>
+  <!-- Footer etc. -->
 </body>
 </html>
