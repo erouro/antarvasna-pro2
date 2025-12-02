@@ -13,83 +13,99 @@
 <body>
   <header class="header-bg text-white p-4 text-center">
     <h1 class="text-3xl font-bold">Antarvasna - Hindi Sex Stories</h1>
+    <p class="text-red-100">Hindi Sex Stories - हिंदी सेक्स कहानियाँ</p>
     <form action="/search" class="mt-4 max-w-md mx-auto">
       <input type="search" name="q" placeholder="Search..." class="w-full p-2 rounded">
     </form>
   </header>
 
+  <!-- Desktop Nav (inline categories) -->
   <nav class="bg-gray-100 p-4 hidden md:block">
-    <div class="flex justify-center space-x-4">
+    <div class="flex justify-center flex-wrap gap-4">
       <% const categories = ['जवान लड़की', 'रिश्तों में चुदाई', 'कोई मिल गया', 'पड़ोसी', 'भाभी की चुदाई', 'इंडियन बीवी की चुदाई', 'गे सेक्स स्टोरी', 'नौकर-नौकरानी', 'लड़कियों की गांड चुदाई']; %>
       <% categories.forEach(cat => { %>
-        <a href="/category/<%= cat.toLowerCase().replace(' ', '-') %>" class="text-red-600 hover:underline"><%= cat %></a>
+        <a href="/category/<%= cat.toLowerCase().replace(/ /g, '-') %>" class="text-red-600 hover:underline"><%= cat %></a>
       <% }); %>
     </div>
   </nav>
 
   <!-- Mobile Hamburger Menu -->
-  <div id="mobileMenu" class="md:hidden bg-white border-t fixed top-0 left-0 w-full h-full hidden z-50 p-4">
+  <div id="mobileMenu" class="md:hidden bg-white border-t fixed top-0 left-0 w-full h-full hidden z-50 p-4 overflow-y-auto">
+    <h2 class="text-lg font-bold mb-4">Categories</h2>
     <% categories.forEach(cat => { %>
-      <a href="/category/<%= cat.toLowerCase().replace(' ', '-') %>" class="block py-2 text-red-600"><%= cat %></a>
+      <a href="/category/<%= cat.toLowerCase().replace(/ /g, '-') %>" class="block py-2 text-red-600 border-b"><%= cat %></a>
     <% }); %>
-    <a href="/subscribe" class="block py-2 text-blue-600">Subscribe</a>
-    <a href="#" onclick="showDonate()" class="block py-2 text-green-600">Donate</a>
+    <a href="/subscribe" class="block py-2 text-blue-600 border-b mt-4">Subscribe</a>
+    <a href="#" onclick="showDonate()" class="block py-2 text-green-600 border-b">Donate</a>
+    <button onclick="toggleMenu()" class="absolute top-4 right-4 text-gray-500">✕</button>
   </div>
-  <button onclick="toggleMenu()" class="md:hidden fixed top-4 right-4 z-40 bg-red-600 text-white p-2">☰</button>
+  <button onclick="toggleMenu()" class="md:hidden fixed top-4 right-4 z-40 bg-red-600 text-white p-2 rounded">☰</button>
 
-  <main class="p-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
-    <section class="col-span-full">
+  <main class="p-4 max-w-4xl mx-auto">
+    <section>
       <h2 class="text-2xl font-bold mb-4">Latest Sex Stories</h2>
       <% stories.forEach(s => { %>
         <article class="border-b pb-4 mb-4">
-          <h3 class="text-xl"><a href="/story/<%= s.id %>"><%= s.title %></a></h3>
-          <p>On <%= s.date %></p>
+          <h3 class="text-xl font-semibold"><a href="/story/<%= s.id %>"><%= s.title %></a></h3>
+          <p class="text-gray-600">On <%= s.date %></p>
           <% s.categories.forEach(cat => { %>
-            <a href="/category/<%= cat.toLowerCase().replace(' ', '-') %>" class="text-red-600"><%= cat %></a>
+            <a href="/category/<%= cat.toLowerCase().replace(/ /g, '-') %>" class="text-red-600 mr-2"><%= cat %></a>
           <% }); %>
-          <p>Tags: <% s.tags.forEach(tag => { %><a href="#" class="text-blue-600"><%= tag %></a> <% }); %></p>
-          <p class="text-gray-600"><%= s.excerpt %></p>
+          <p>Tags: <% s.tags.forEach(tag => { %><a href="#" class="text-blue-600 mr-1"><%= tag %></a><% }); %></p>
+          <p class="text-gray-600 mt-2"><%= s.excerpt %></p>
+          <img src="<%= s.thumbnail %>" alt="<%= s.title %>" class="w-full h-48 object-cover mt-2 rounded">
         </article>
       <% }); %>
-      <a href="#" class="text-red-600">Jump to Page</a>
     </section>
+
+    <!-- Pagination (numbered, site jaisa simple) -->
+    <% if (totalPages > 1) { %>
+      <div class="flex justify-center mt-8 gap-2">
+        <% if (currentPage > 1) { %><a href="?page=<%= currentPage - 1 %>" class="px-3 py-2 bg-red-600 text-white rounded">Prev</a><% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="px-3 py-2 <%= i === currentPage ? 'bg-red-600 text-white' : 'bg-gray-200' %> rounded"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %><a href="?page=<%= currentPage + 1 %>" class="px-3 py-2 bg-red-600 text-white rounded">Next</a><% } %>
+      </div>
+    <% } %>
   </main>
 
-  <footer class="bg-gray-800 text-white p-4 mt-8">
-    <h3>Indian Porn Empire Network</h3>
-    <ul class="space-y-2">
-      <li><a href="https://www.antarvasna3.com/videos/">Hindi XXX videos</a></li>
-      <li><a href="https://keitaro.dsccash.com/p8HFSY?cost=0&creative_id=TextAd_HP&source=antarvasna3.com&source_id=AV&affid=2&oid=4">Indian Live Sex</a></li>
-      <li><a href="https://www.savitabhabhivideos.com/?affID=AV-NETWORK-MENU">Savita Bhabhi</a></li>
+  <footer class="bg-gray-800 text-white p-4 mt-8 text-center">
+    <h3 class="font-bold mb-4">Indian Porn Empire Network</h3>
+    <ul class="flex justify-center gap-4 mb-4">
+      <li><a href="https://www.antarvasna3.com/videos/" class="hover:underline">Hindi XXX videos</a></li>
+      <li><a href="https://keitaro.dsccash.com/p8HFSY?cost=0&creative_id=TextAd_HP&source=antarvasna3.com&source_id=AV&affid=2&oid=4" class="hover:underline">Indian Live Sex</a></li>
+      <li><a href="https://www.savitabhabhivideos.com/?affID=AV-NETWORK-MENU" class="hover:underline">Savita Bhabhi</a></li>
     </ul>
-    <a href="#" class="block mt-4 text-red-400">Scroll To Top</a>
+    <a href="#" onclick="window.scrollTo(0,0);" class="text-red-400 hover:underline">Scroll To Top</a>
+    <p class="mt-2 text-sm">Advertise here via Traforama</p>
   </footer>
 
   <!-- Subscribe Modal -->
-  <div id="subscribeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded max-w-md w-full">
-      <h3 class="text-xl mb-4">Subscribe</h3>
+  <div id="subscribeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white p-6 rounded max-w-md w-full m-4">
+      <h3 class="text-xl font-bold mb-4">Subscribe for Updates</h3>
       <form action="/subscribe" method="POST">
-        <input type="text" name="name" placeholder="Name" class="w-full p-2 mb-2 border" required>
-        <input type="email" name="email" placeholder="Email" class="w-full p-2 mb-2 border" required>
-        <input type="tel" name="phone" placeholder="Phone" class="w-full p-2 mb-2 border">
-        <input type="text" name="upi" placeholder="UPI ID" class="w-full p-2 mb-2 border">
-        <textarea name="address" placeholder="Address" class="w-full p-2 mb-2 border"></textarea>
-        <button type="submit" class="bg-blue-600 text-white p-2 w-full">Subscribe</button>
+        <input type="text" name="name" placeholder="Name" class="w-full p-2 mb-2 border rounded" required>
+        <input type="email" name="email" placeholder="Email" class="w-full p-2 mb-2 border rounded" required>
+        <input type="tel" name="phone" placeholder="Phone" class="w-full p-2 mb-2 border rounded">
+        <input type="text" name="upi" placeholder="UPI ID" class="w-full p-2 mb-2 border rounded">
+        <textarea name="address" placeholder="Address" class="w-full p-2 mb-2 border rounded h-20"></textarea>
+        <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">Subscribe</button>
       </form>
       <button onclick="closeModal('subscribeModal')" class="mt-2 text-gray-500">Close</button>
     </div>
   </div>
 
   <!-- Donate Modal -->
-  <div id="donateModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded max-w-md w-full">
-      <h3 class="text-xl mb-4">Donate via UPI</h3>
+  <div id="donateModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white p-6 rounded max-w-md w-full m-4">
+      <h3 class="text-xl font-bold mb-4">Donate via UPI</h3>
       <form action="/donate" method="POST">
-        <input type="text" name="upi" placeholder="Your UPI ID" class="w-full p-2 mb-2 border" required>
-        <input type="number" name="amount" placeholder="Amount (₹)" class="w-full p-2 mb-2 border" required>
-        <textarea name="message" placeholder="Message" class="w-full p-2 mb-2 border"></textarea>
-        <button type="submit" class="bg-green-600 text-white p-2 w-full">Donate</button>
+        <input type="text" name="upi" placeholder="Your UPI ID" class="w-full p-2 mb-2 border rounded" required>
+        <input type="number" name="amount" placeholder="Amount (₹)" class="w-full p-2 mb-2 border rounded" required min="1">
+        <textarea name="message" placeholder="Message (optional)" class="w-full p-2 mb-2 border rounded h-20"></textarea>
+        <button type="submit" class="w-full bg-green-600 text-white p-2 rounded">Donate</button>
       </form>
       <button onclick="closeModal('donateModal')" class="mt-2 text-gray-500">Close</button>
     </div>
@@ -97,7 +113,7 @@
 
   <script>
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
-    function showDonate() { document.getElementById('donateModal').classList.remove('hidden'); }
+    function showDonate() { document.getElementById('donateModal').classList.remove('hidden'); toggleMenu(); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
   </script>
