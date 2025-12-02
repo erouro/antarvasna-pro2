@@ -1,4 +1,4 @@
-require('dotenv').config();
+if (req.body.pass === (process.env.ADMIN_PASS || "DesiKahani@786")) {
 const express = require('express');
 const app = express();
 
