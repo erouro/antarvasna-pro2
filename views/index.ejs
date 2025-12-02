@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Antarvasna - Hindi Sex Stories</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#dc2626">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif;background:#fff;color:#000;} a{color:#dc2626;text-decoration:none;} .header-bg{background:#dc2626;}</style>
+</head>
+<body>
+  <header class="header-bg text-white p-4 text-center">
+    <h1 class="text-3xl font-bold">Antarvasna - Hindi Sex Stories</h1>
+    <form action="/search" class="mt-4 max-w-md mx-auto">
+      <input type="search" name="q" placeholder="Search..." class="w-full p-2 rounded">
+    </form>
+  </header>
+
+  <nav class="bg-gray-100 p-4 hidden md:block">
+    <div class="flex justify-center space-x-4">
+      <% const categories = ['जवान लड़की', 'रिश्तों में चुदाई', 'कोई मिल गया', 'पड़ोसी', 'भाभी की चुदाई', 'इंडियन बीवी की चुदाई', 'गे सेक्स स्टोरी', 'नौकर-नौकरानी', 'लड़कियों की गांड चुदाई']; %>
+      <% categories.forEach(cat => { %>
+        <a href="/category/<%= cat.toLowerCase().replace(' ', '-') %>" class="text-red-600 hover:underline"><%= cat %></a>
+      <% }); %>
+    </div>
+  </nav>
+
+  <!-- Mobile Hamburger Menu -->
+  <div id="mobileMenu" class="md:hidden bg-white border-t fixed top-0 left-0 w-full h-full hidden z-50 p-4">
+    <% categories.forEach(cat => { %>
+      <a href="/category/<%= cat.toLowerCase().replace(' ', '-') %>" class="block py-2 text-red-600"><%= cat %></a>
+    <% }); %>
+    <a href="/subscribe" class="block py-2 text-blue-600">Subscribe</a>
+    <a href="#" onclick="showDonate()" class="block py-2 text-green-600">Donate</a>
+  </div>
+  <button onclick="toggleMenu()" class="md:hidden fixed top-4 right-4 z-40 bg-red-600 text-white p-2">☰</button>
+
+  <main class="p-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+    <section class="col-span-full">
+      <h2 class="text-2xl font-bold mb-4">Latest Sex Stories</h2>
+      <% stories.forEach(s => { %>
+        <article class="border-b pb-4 mb-4">
+          <h3 class="text-xl"><a href="/story/<%= s.id %>"><%= s.title %></a></h3>
+          <p>On <%= s.date %></p>
+          <% s.categories.forEach(cat => { %>
+            <a href="/category/<%= cat.toLowerCase().replace(' ', '-') %>" class="text-red-600"><%= cat %></a>
+          <% }); %>
+          <p>Tags: <% s.tags.forEach(tag => { %><a href="#" class="text-blue-600"><%= tag %></a> <% }); %></p>
+          <p class="text-gray-600"><%= s.excerpt %></p>
+        </article>
+      <% }); %>
+      <a href="#" class="text-red-600">Jump to Page</a>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-4 mt-8">
+    <h3>Indian Porn Empire Network</h3>
+    <ul class="space-y-2">
+      <li><a href="https://www.antarvasna3.com/videos/">Hindi XXX videos</a></li>
+      <li><a href="https://keitaro.dsccash.com/p8HFSY?cost=0&creative_id=TextAd_HP&source=antarvasna3.com&source_id=AV&affid=2&oid=4">Indian Live Sex</a></li>
+      <li><a href="https://www.savitabhabhivideos.com/?affID=AV-NETWORK-MENU">Savita Bhabhi</a></li>
+    </ul>
+    <a href="#" class="block mt-4 text-red-400">Scroll To Top</a>
+  </footer>
+
+  <!-- Subscribe Modal -->
+  <div id="subscribeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded max-w-md w-full">
+      <h3 class="text-xl mb-4">Subscribe</h3>
+      <form action="/subscribe" method="POST">
+        <input type="text" name="name" placeholder="Name" class="w-full p-2 mb-2 border" required>
+        <input type="email" name="email" placeholder="Email" class="w-full p-2 mb-2 border" required>
+        <input type="tel" name="phone" placeholder="Phone" class="w-full p-2 mb-2 border">
+        <input type="text" name="upi" placeholder="UPI ID" class="w-full p-2 mb-2 border">
+        <textarea name="address" placeholder="Address" class="w-full p-2 mb-2 border"></textarea>
+        <button type="submit" class="bg-blue-600 text-white p-2 w-full">Subscribe</button>
+      </form>
+      <button onclick="closeModal('subscribeModal')" class="mt-2 text-gray-500">Close</button>
+    </div>
+  </div>
+
+  <!-- Donate Modal -->
+  <div id="donateModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded max-w-md w-full">
+      <h3 class="text-xl mb-4">Donate via UPI</h3>
+      <form action="/donate" method="POST">
+        <input type="text" name="upi" placeholder="Your UPI ID" class="w-full p-2 mb-2 border" required>
+        <input type="number" name="amount" placeholder="Amount (₹)" class="w-full p-2 mb-2 border" required>
+        <textarea name="message" placeholder="Message" class="w-full p-2 mb-2 border"></textarea>
+        <button type="submit" class="bg-green-600 text-white p-2 w-full">Donate</button>
+      </form>
+      <button onclick="closeModal('donateModal')" class="mt-2 text-gray-500">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+    function showDonate() { document.getElementById('donateModal').classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+  </script>
+</body>
+</html>
